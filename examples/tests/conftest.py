@@ -9,6 +9,7 @@ from jsonref import requests
 from pytest_asyncio import fixture
 
 dotenv.load_dotenv()
+os.environ["DISABLE_ANONYMOUS_METRICS"] = "true"  # machine is ran from subprocess, so disable metrics via envar
 
 
 def tail(file_path, sleep_sec=0.1):

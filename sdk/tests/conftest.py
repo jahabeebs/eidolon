@@ -29,6 +29,9 @@ from eidolon_ai_sdk.system.resources.agent_resource import AgentResource
 from eidolon_ai_sdk.system.resources.machine_resource import MachineResource
 from eidolon_ai_sdk.system.resources.resources_base import Resource, Metadata
 from eidolon_ai_sdk.util.class_utils import fqn
+from eidolon_ai_sdk.util.posthog import PosthogConfig
+
+PosthogConfig.enabled = False
 
 
 # we want all tests using the client_builder to use vcr, so we don't send requests to openai
@@ -333,7 +336,9 @@ def deterministic_process_ids(test_name):
     def patched_fid(*args, **kwargs):
         return next(fid_generator)
 
-    with patch.object(agent_controller, "ObjectId", new=patched_pid), patch.object(process_file_system, "ObjectId", new=patched_fid):
+    with patch.object(agent_controller, "ObjectId", new=patched_pid), patch.object(
+        process_file_system, "ObjectId", new=patched_fid
+    ):
         yield
 
 
