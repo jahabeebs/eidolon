@@ -1,50 +1,45 @@
+import Markdown, {uriTransformer} from "react-markdown";
 import remarkGfm from "remark-gfm";
 // @ts-ignore
-import rehypeWrap from 'rehype-wrap-all';
-import rehypeRaw from 'rehype-raw';
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
-import "./eidolon-markdown.css";
-import { Link } from "@mui/material";
-import Markdown from 'react-markdown';
+import rehypeWrap from 'rehype-wrap-all'
+import rehypeRaw from 'rehype-raw'
+import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
+import {materialLight} from "react-syntax-highlighter/dist/esm/styles/prism";
+import "./eidolon-markdown.css"
+import {Link} from "@mui/material";
 
 interface EidolonMarkdownProps {
-  machineUrl: string;
-  children: any;
-  showLineNumbers?: boolean;
+  machineUrl: string
+  children: any
+  showLineNumbers?: boolean
 }
 
-export const EidolonMarkdown = ({ machineUrl, children, showLineNumbers }: EidolonMarkdownProps) => {
+export const EidolonMarkdown = ({machineUrl, children, showLineNumbers}: EidolonMarkdownProps) => {
   const pattern = /(https?:\/\/[^/]+)\/processes\/([^/]+)\/files\/([^/\s]+)/;
-
   const transformURL = (url: string) => {
-    const match = url.match(pattern);
+    const match = url.match(pattern)
     if (match) {
-      const processId = match[2]!;
-      const fileId = match[3]!;
-      return `/api/eidolon/process/${processId}/files/${fileId}?machineURL=${machineUrl}`;
+      const processId = match[2]!
+      const fileId = match[3]!
+      return `/api/eidolon/process/${processId}/files/${fileId}?machineURL=${machineUrl}`
     }
-    return url;
-  };
+    return uriTransformer(url)
+  }
 
   // noinspection JSUnusedGlobalSymbols
   return <Markdown
     className={"markdown"}
     // @ts-ignore
     rehypePlugins={[[rehypeRaw], [rehypeWrap, {selector: 'table', wrapper: 'div.responsive-table'}]]}
-      // @ts-ignore
     remarkPlugins={[remarkGfm]}
-      // @ts-ignore
     transformImageUri={(src) => transformURL(src)}
-      // @ts-ignore
     transformLinkUri={(href) => transformURL(href)}
     components={{
       code(props) {
         const {children, className, ...rest} = props
         const match = /language-(\w+)/.exec(className || '')
         return match ? (
-            // @ts-ignore
-            <SyntaxHighlighter
+          <SyntaxHighlighter
             {...rest}
             PreTag="div"
             language={match[1]}
@@ -64,10 +59,8 @@ export const EidolonMarkdown = ({ machineUrl, children, showLineNumbers }: Eidol
       },
       a(props) {
         if (props.href) {
-          // @ts-ignore
           return <Link href={props.href} title={props.title}>{props.children}</Link>
         } else {
-          // @ts-ignore
           return <Link title={props.title}>{props.children}</Link>
         }
       },
