@@ -1,11 +1,8 @@
-// @ts-ignore
 import Markdown, {uriTransformer} from "react-markdown";
-// @ts-ignore
 import remarkGfm from "remark-gfm";
 // @ts-ignore
+import rehypeWrap from 'rehype-wrap-all'
 import rehypeRaw from 'rehype-raw'
-// @ts-ignore
-import rehypeWrap from "rehype-wrap-all";
 import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
 import {materialLight} from "react-syntax-highlighter/dist/esm/styles/prism";
 import "./eidolon-markdown.css"

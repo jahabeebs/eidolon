@@ -1,7 +1,7 @@
 name: Test
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
   workflow_dispatch:
 
@@ -172,6 +172,12 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install dependencies
         run: pnpm install
+        working-directory: webui
+      - name: Debug Environment
+        run: |
+          node -v
+          pnpm -v
+          pnpm list --depth=0
         working-directory: webui
       - name: lint
         run: pnpm lint
